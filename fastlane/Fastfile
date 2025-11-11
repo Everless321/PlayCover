@@ -45,22 +45,15 @@ end
 
 lane :nightly do
   setup_ci if ENV['CI']
-  match(type: "developer_id", readonly: true)
+  unless ENV['SKIP_SIGNING']
+    match(type: "developer_id", readonly: true)
+  end
   Dir.chdir("..") do
     sh("carthage", "update", "--use-xcframeworks")
   end
-  carthage(use_xcframeworks: true)
-  build_mac_app(
-    configuration: "Nightly",
-    scheme: "PlayCover",
-    output_directory: "output",
-    output_name: "PlayCover",
-    export_method: "developer-id",
-    destination: "generic/platform=macOS",
-    skip_package_pkg: true,
-    xcargs: "FASTLANE=1",
-    )
+  build_app(scheme: "PlayCover", export_method: "developer_id")
 end
+
 
 lane :notarize_app do
   notarize(

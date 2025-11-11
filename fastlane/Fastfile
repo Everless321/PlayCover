@@ -51,7 +51,7 @@ lane :nightly do
   Dir.chdir("..") do
     sh("carthage", "update", "--use-xcframeworks")
   end
-  build_app(scheme: "PlayCover", export_method: "developer_id")
+  build_app(scheme: "PlayCover", export_method: "developer-id")
 end
 
 
